@@ -16,25 +16,23 @@ export default function App() {
     { text: "buy coffee", key: "1" },
     { text: "create an app", key: "2" },
     { text: "play on the switch", key: "3" },
-    { text: "hello", key: "4" },
   ]);
 
   const pressHandler = (key) => {
     setTodos((prevTodos) => {
-      return prevTodos.filter((todo) => todo.key !== key);
+      return prevTodos.filter((todo) => todo.key != key);
     });
   };
 
   const submitHandler = (text) => {
-    if (text.length < 3) {
-      //too small to add to the to do list
-      Alert.alert("oops!", "todos must be over 3 chars long", [
+    if (text.length > 3) {
+      setTodos((prevTodos) => {
+        return [{ text, key: Math.random().toString() }, ...prevTodos];
+      });
+    } else {
+      Alert.alert("OOPS", "Todo must be over 3 characters long", [
         { text: "Understood", onPress: () => console.log("alert closed") },
       ]);
-    } else {
-      setTodos((prevTodos) => {
-        return [{ text: text, key: Math.random() * 34 }, ...prevTodos];
-      });
     }
   };
 
@@ -42,6 +40,7 @@ export default function App() {
     <TouchableWithoutFeedback
       onPress={() => {
         Keyboard.dismiss();
+        console.log("dismissed");
       }}
     >
       <View style={styles.container}>
@@ -69,8 +68,10 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 40,
+    flex: 1,
   },
   list: {
     marginTop: 20,
+    flex: 1,
   },
 });
